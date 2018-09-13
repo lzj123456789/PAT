@@ -1,0 +1,387 @@
+1005	string的每个元素是char -'0'会变成int
+1035	注意输出结果中的单复数，are or is /ns or n
+		注意 unordered_map在一定情况下会排序key，所以最好用vector记录下初始key的顺序
+1077	包括空格逐行读取
+		getline(cin,string);
+	 	注意：前面如果用了scanf,加上getchar()！
+	 	reverse(.begin(),.end());
+1022 	数据结构如下：
+	 	struct NODE{
+			string id;
+			int grade[4];
+		};	
+		之后专门开辟 unordered_map<string,std::vector<int> > rankStu;
+		来保存每个学生的rank值；
+		对grade逐个排序可以设置a.grade[current]>b.grade[current]; current为
+		全局变量
+		对于分段式rank 1224，可以先记录第一名，之后i=1遍历，每次比较i与i-1的分数值是不是相等，不等则用i+1；
+		for(current=0;current<4;current++){
+			sort(v.begin(),v.end(),cmp);
+			rankStu[v[0].id].push_back(1);
+			for(int j=1;j<v.size();j++){
+				if(v[j].grade[current]==v[j-1].grade[current]){
+					rankStu[v[j].id].push_back(rankStu[v[j-1].id][current]);
+				}else {
+					rankStu[v[j].id].push_back(j+1);
+				}
+			}
+		}
+		对于1-A 2-B之类都可以对A B方置于数组中，之后索引号访问。
+
+1028	cmp函数可以设置全局变量，选择性调用
+		w.id.c_str() string转化为c，该题输出需要printf否则最后一个测试点超时
+1055	scanf 输入速度提高100ms
+		strcmp(a.name,b.name)<0 a<b
+		char a[10];
+		vector 初始化则可以直接&赋值。&total1[i].age，数组不加取地址
+1033	std::vector<NODE> station(n);动态开辟vector
+		求最低油耗 此题适合背诵。。
+		1、将最后终点也作为一个station
+		2、while判断结束时now是不是等于n
+
+1037	测试数据缺少可能是for语句结束条件打错了 比如 nc与np极易打错
+		auto语句不适合遍历vector[]，而且vector[] 不可以用()初始化
+		对于找最大值的题目可以试着排下序列。
+		直接两个数排序不要加&与const
+
+1038	1、a+b<b+a 
+		2、前0去除 找到第一个非零元素，截取substr
+			int i=0;
+			for(auto &w:res){
+				if(w-'0'!=0){
+					break;
+				}
+				i++;
+			}
+			res = res.substr(i,res.size()-i);
+		3、全零 0 0 0 以及 01 001 0001 的处理
+1089	插入排序 
+		for(int i=1;i<=n;i++){//i=2
+			sort(data.begin(),data.begin()+i);
+		}
+		归并
+		for(int l=1;l/2<n;l = l*2){
+			for(int i=0;i<n;i+=l){
+				sort(data.begin()+i,min(data.end(),data.begin()+i+l));
+			}
+		}
+		1、输入数据本身有序，应该去找第一组不同的数据
+		2、vector可以直接比较相等 a==b
+1025	数组比vector更省空间，可以仅开辟一个数组 中位数在第（n+m+1）/2的位置（从1开始数）
+		从0开始数的话在第（n+m-1）/2的位置
+1093	PAT = p*t,将a作为分界线，可以第二轮边扫描边输出结果。
+1101	从左往右记录最大，从右往左记录最小，通过这两轮筛选留下可用的元素
+		测试点：
+			if(j==0){
+				printf("\n");
+				return 0;
+			}
+		与1093类似都是两边扫描一遍
+
+1069	str.insert(position,how many,''/char);
+		测试点： 6174
+		猜测测试点 0，001，100，6174，2222.
+1104	7 = 1*7
+		12 = 2*6
+		15 = 3*5...
+		边输入边计算
+1008	在线算法 边输入边计算
+1081	分数模板
+		gcd模板
+		int gcd(int a,int b){
+			return b?(gcd(b,a%b)):a;
+		}
+		错因：1、== 误 = 2、0的处理
+1088	略繁琐
+		1、输入的数据也要约分！！！！
+		2、res.insert(res.size(),1,')');末尾插入
+		3、格式化输出先判断前面是不是0并受两个限制条件约束
+				if(a.integer==0&&a.up!=0){//2/3
+					res = to_string(a.up)+"/"+to_string(a.down);
+				}else if(a.up==0){
+					res = to_string(a.integer);
+				}else{
+					res = to_string(a.integer)+" "+to_string(a.up)+"/"+to_string(a.down);
+				}
+1015	素数判断
+		bool isPrime(int a){
+			if(a<=1) return false;//1不是素数
+			for(int i=2;i*i<=a;i++){
+				if(a%i==0) return false;
+			}
+			return true;
+		}
+		10进制a转化为d进制,这样的v是反向的！
+		while(a){
+			v.push_back(a%d);
+			a = a/d;
+		}
+1078	平方探查
+		for(int step=0;step<msize;step++)//从0开始一般都小于size
+			if(isUsed[(key+step*step)%msize]==0)
+		本题再次将if(i==1) 写成i=1
+1059	分解质因数遍历从2~sqrt(n)
+		测试点可以选择1，2，3，...10以及题目给出的数字
+1023	大于10位的整数加法，模版
+		string add(string a,string b){
+			reverse(a.begin(),a.end());
+			reverse(b.begin(),b.end());
+			if(a.size()>=b.size){
+				b.insert(b.end(),a.size()-b.size(),'0');
+			}else{
+				a.insert(a.end(),b.size()-a.size(),'0');
+			}
+			int sum=0,cin=0;
+			string res="";
+			for(int i=0;i<a.size();i++){
+				sum = (a[i]-'0')+(b[i]-'0')+cin;
+				res += to_string(sum%10);
+				cin = sum/10;
+			}
+			if(cin) res+=to_string(cin);
+			reverse(res.begin(),res.end());
+			return res;
+		}
+1039	unordered_map 预分配max+10个恰好过去，以string作为索引时可以考虑unordered_map
+1047	cmp排序的依据可以是外部变量
+		本题中只要能保证可以唯一索引到name即可，不要必须选择name的最后一个字节
+		printf函数来说，%s可以只输出有效的部分
+		char数组速度比string快了很多。
+		数字作为索引首选vector
+1063	set的插入操作比较费时间，所以不要进行两个set的合并操作来求size。
+1060	注意(auto) pointa!=string::npos来检测是不是找到"."
+1100	数据量较小直接建立索引表
+		1、getline主要getchar()的使用
+		2、13的倍数位不输出0
+		3、首先找进制，一般在第一句话
+1071	按照非有效字符划分字符串
+		for(int i=0;i<data.size();){
+			char w = data[i];
+			if((w>='0'&&w<='9')||(w>='A'&&w<='Z')||(w>='a'&&w<='z')){
+				//此处对大小写之类处理 data[i] = tolower(data[i]);
+				i++;
+			}else{
+				end = i;
+				string tmp = data.substr(begin,end-begin);
+				//tmp即所求
+				while(1){
+					i++;
+					w = data[i];
+					//注意不要越界
+					if(((w>='0'&&w<='9')||(w>='A'&&w<='Z')||(w>='a'&&w<='z'))||i>=data.size())
+					break;
+				}
+				begin = i;//begin的更新位置也在else里面
+			}
+		}
+1072	为每一个都建立索引表
+		keyword要分开以空格分隔
+		getline 之前要有getchar()!!!!!
+		data = data+' ';//!!!!!!!!!!!
+		for(int i=0;i<data.size();i++){
+			if(data[i]==' '){
+				end = i;
+				string tmp = data.substr(begin,end-begin);
+				//tmp即所求
+				begin = i+1;
+			}
+		}
+1051	stack 访问栈顶元素a=s.top() ;s.pop();
+		先找相等的地方
+1020	inorder postorder
+		现在纸上画两步
+		Node create(int postL,int postR,int inL,int inR){
+			if(postL>postR) return NULL;
+			Node node = new NODE;
+			node->data = postorder[postR];
+			int i=inL;
+			for(;i<=inR;i++){
+				if(postorder[postR]==inorder[i]){
+					break;
+				}
+			}
+			int len = i- inL;//先记录一下长度 即为 inL~i-1 元素的个数 ->即从 inL 数到 i-1
+			node->left = create(postL,postL+len/*会加到i的位置 所以要减去1*/-1,inL,i-1);
+			node->right = create(postL+len/*不是i！！！*/,postR-1,i+1,inR);
+			return node;//别忘了return
+		}
+		L   R  L   R
+		2 3 1  5 7 6  4
+
+		L   R  i  L   R
+		1 2 3  4  5 6 7
+1086	中序遍历和先序遍历
+		  L   R L R
+		1 2 3 4 5 6
+		L   R i L R
+		3 2 4 1 6 5
+		Node build(int prel,int prer,int inl,int inr){
+			if(prel>prer ) return NULL;
+			Node node = new NODE;
+			node->data = preOrder[prel];
+			int i = inl;
+			for(;i<=inr;i++){
+				if(preOrder[prel]==inorder[i])
+					break;
+			}
+			int len = i- inl;
+			node->left = build(prel+1,prel+len,inl,i-1);
+			node->right = build(prel+len+1,prer,i+1,inr);//斜线对应关系
+			return node;
+		} 
+		Push 1 启发我们读两次
+1102	树的反转输出启示我们直接缓缓左右遍历的顺序
+		对于子节点有'-' 不妨试试unordered_map来建立树
+		寻找root的算法如下
+		unordered_map<string,string> parents;
+		for(int i=0;i<n;i++){
+			string tmp = to_string(i);
+			parents[tmp] = tmp;
+		}
+		for(intput){
+			if(intput!='-') parents[intput] = itParent;//一般默认0~n-1
+		}
+		string root="0";//任意一个节点
+		while(parents[root]!=root) root=parents[root];
+		//得到root
+1079	dfs模板
+		void dfs(int node){//tmp.push_back(node)
+			isVisited[node] = true;//if(graph[node].size()==0) 说明为叶子节点
+			for(auto w:graph[node]){
+				if(isVisited[w]==false){
+					dfs(w);
+				}
+			}//tmp.pop_back()
+		}
+		注意在函数定义时 double 如 dfs(int a,double p)
+1053	段错误：cmp函数必须有返回值！！！
+1043	镜像遍历注意： 错误代码示范！！
+		void preOrderM(Node root){
+			if(root==NULL) return;
+			pre2.push_back(root->data);
+			preOrder(root->right);
+			preOrder(root->left);
+		}
+		题意理解： print in the next line the postorder traversal sequence of that tree
+		that tree！先序要输出对应该后序，镜像先序要输出对应镜像后序！
+1064	index 不要用！！
+		完全二叉树可以用数组存放
+		先观察输入序列和树遍历顺序的关系，inorder建树
+		root从1开始
+		void inOrder(int root){
+			if(root>n) return;
+			inOrder(2*root);
+			tree[root] = input[ii++];
+			inOrder(2*root+1);
+		}
+1099	1、n在没有初始化以前不可以 std::vector<int> weight(n);
+		尤其是外部声明，n必须固定为常数！！！
+		2、一种新的数据结构
+			struct NODE{
+				int left;
+				int right;
+				int data;
+			};
+			unordered_map<int,NODE > graph;
+		用来记录二叉树的节点
+1043	顺序均为先左后右侧
+		void insert(Node &root,data){
+			if(root==NULL){
+				root = new NODE;
+				root->data = data;
+				return root;
+			}
+			if(data<root->data){
+				insert(root->left,data);
+			}else{
+				insert(root->right,data);
+			}
+		}
+		insert(tree,data);
+		//&
+
+		Node insert(Node (&)root,int data){
+			if(root==NULL){
+				root = new NODE;
+				root->data = data;
+			}else if(data<root->data){
+				root->left = insert(root->left,data);
+			}else{
+				root->right = insert(root->right,data);
+			}
+			return root;
+		}
+		tree = insert(tree,data);
+		//1、return 2、tree=insert(tree,data);
+1066	AVL 模版
+		typedef struct NODE *Node;
+		struct NODE{
+			Node left;
+			Node right;
+			int data;
+		};
+		Node Lrotate(Node node){
+			Node tmp = node->right;
+			node->right = tmp->left;
+			tmp->left = node;
+			return tmp;
+		}
+		Node Rrotate(Node node){
+			Node tmp = node->left;
+			node->left = tmp->right;
+			tmp->right = node;
+			return tmp;
+		}
+		Node LRrotate(Node node){
+			node->left = Lrotate(node->left);
+			return Rrotate(node);
+		}
+		Node RLrotate(Node node){
+			node->right = Rrotate(node->right);
+			return RLrotate(node);
+		}
+		int getHeight(Node node){
+			if(node==NULL) return 0;
+			int l = getHeight(node->left);
+			int r = getHeight(node->right);
+			return max(l,r)+1;
+		}
+		Node insert(Node node,int data){
+			if(node==NULL){
+				node = new NODE();
+				node->data = data;
+				node->left = node->right = NULL;
+			}else if(data<node->data){
+				node->left = insert(node->left,data);
+				int l = getHeight(node->left),r = getHeight(node->right);
+				if(l-r==2){
+					if(data<node->left->data){
+						node = Rrotate(node);
+					}else{
+						node = LRrotate(node);
+					}
+				}
+			}else{
+				node->right = insert(node->right,data);
+				int l = getHeight(node->left),r = getHeight(node->right);
+				if(r-l==2){
+					if(data>node->right->data){
+						node = Lrotate(node);
+					}else{
+						node = RLrotate(node);
+					}
+				}
+			}
+			return node;
+		}
+		//tree = insert(tree,data);
+		易错点：忘记insert里面的递归
+
+1107	迷一般的并查集
+		int findFather(int a){
+			return (a==fa[a])?(a):(fa[a]=findFather(fa[a]));
+		}
+		输入时
+bool operator < (const node & a) const{
+	return (cnt!=a.cnt)?(cnt>a.cnt)?(value<a.value);
+}
